@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import img from '../assets/icons/Joker Teen Patti-min.png'
+import {useDispatch,useSelector} from 'react-redux';
+import { getAllGamesProvider ,launchGame} from '../redux/reducer/AllgameReducer';
+import { useNavigate } from 'react-router-dom';
+
 const Casino = () => {
     const [activeTab, setActiveTab] = useState("ALL CASINO");
+    const {getAllGamesProviderData,filteredGamesProvider}=useSelector((state)=>state.game)
     const games = [
         {
           id: 1,
@@ -77,6 +82,13 @@ const Casino = () => {
           bgColor: "bg-emerald-700",
         },
       ]
+      const navigate=useNavigate();
+      const {userInfo}=useSelector((state)=>state.auth);
+const dispatch=useDispatch();
+useEffect(() => {
+
+dispatch(getAllGamesProvider({page:1,limit:20,provider:"evolutionlive"}));
+}, [dispatch])
 
         // Sub-categories for games
   const subCategories = [
@@ -91,11 +103,37 @@ const Casino = () => {
     "3 CARD",
   ]
 
+  const handlePlayGame = async (game) => {
+      
+      if (!userInfo) {
+        navigate("/login", {
+          state: { redirectTo: `/horse-racing || ""}` },
+        });
+        return;
+      }
+    
+      try {
+        await dispatch(
+          launchGame({ gameId: game.game_uid || game.id })
+        ).unwrap();
+    
+        navigate(`/play/${game.game_uid || game.id}`, {
+          state: {
+            gameUrl: game.game_url,
+            gameName: game.game_name,
+            provider: game.provider,
+          },
+        });
+      } catch (err) {
+        alert(err || "Failed to launch game");
+      }
+    };
+
   return (
    
     <div>
     <nav className="flex font-bold bg-color border-b border-emerald-600 relative text-[12px] overflow-auto">
-      {subCategories.map((category, index) => (
+      {/* {subCategories.map((category, index) => (
         <button
           key={index}
           className={`px-4 py-2 hover:bg-emerald-600 transition-colors whitespace-nowrap ${activeTab === category ? "bg-emerald-600" : ""}`}
@@ -103,7 +141,7 @@ const Casino = () => {
         >
           {category}
         </button>
-      ))}
+      ))} */}
 
       {/* Search button */}
       {/* <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
@@ -117,13 +155,14 @@ const Casino = () => {
 
 <div className="container mx-auto p-1 md:p-4 relative">
   <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-4">
-    {games.map((game) => (
+    {getAllGamesProviderData?.map((game) => (
       <div key={game.id} className="relative group cursor-pointerl">
         <div
           className={` bg-color rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform  h-full`}
+          onClick={()=>handlePlayGame(game)}
         >
           <div className="md:md:h-48 relative flex items-center justify-center">
-              <img src={game.image} alt="game" />
+              <img src={game.icon} alt="game" />
           </div>
           <div className="py-2 text-center text-white font-bold bg-color text-[12px] whitespace-nowrap">{game.title}</div>
         </div>

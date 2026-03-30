@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   /* ✅ CORRECT SELECTOR (auth, not user) */
-  const { whatsappNumber, whatsappLoading } = useSelector(
+  const { whatsappNumber, whatsappLoading, loading } = useSelector(
     (state) => state.auth
   );
 
@@ -139,9 +139,10 @@ const Login = () => {
           <div className="space-y-3 pt-2">
             <button
               type="submit"
-              className="w-full bg-white text-black font-bold py-2.5 rounded-full flex items-center justify-center gap-2"
+              disabled={loading}
+              className="w-full bg-white text-black font-bold py-2.5 rounded-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              LOG IN <MdOutlineLogin size={18} />
+              {loading ? "Logging In..." : "LOG IN"} <MdOutlineLogin size={18} />
             </button>
 
             <button

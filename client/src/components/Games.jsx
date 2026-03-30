@@ -12,7 +12,7 @@ import Platingame from "../Games/Platingame";
 export default function Games() {
     const [activeTab, setActiveTab] = useState("ALL");
   // Main navigation categories
-  const mainCategories = ["ALL", "OUR CASINO", "OUR VIRTUAL", "EVOLUTION", "EZUGI", "TVBET", "BETGAME", "PLATINGAMES"]
+  const mainCategories = ["ALL", "OUR CASINO", "OUR VIRTUAL", "EVOLUTION", "EZUGI"]
 
 
   // Game data
@@ -56,9 +56,9 @@ export default function Games() {
       {activeTab == "EZUGI" && (
         <Ezugi />
       )}
-      {activeTab == "TVBET" && (
+      {/* {activeTab == "TVBET" && (
         <TvBet />
-      )}
+      )} */}
       {activeTab == "BETGAME" && (
         <BetGame />
       )}

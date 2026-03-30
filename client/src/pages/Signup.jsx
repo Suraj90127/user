@@ -11,11 +11,14 @@ import { registerUser, getWhatsappNumber } from "../redux/reducer/authReducer";
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showMasterPassword, setShowMasterPassword] = useState(false);
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
+    masterPassword: "",
     promoCode: "",
   });
   const [errors, setErrors] = useState({});
@@ -31,11 +34,13 @@ const Signup = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Email validation
+    // Username validation
     if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "Username is required";
+    } else if (formData.email.length < 3) {
+      newErrors.email = "Username must be at least 3 characters";
+    } else if (!/^[a-zA-Z0-9_-]+$/.test(formData.email)) {
+      newErrors.email = "Username can only contain letters, numbers, underscore and hyphen";
     }
 
     // Phone validation
@@ -78,12 +83,23 @@ const Signup = () => {
       return;
     }
 
+    if (!formData.name) {
+      toast.error("Name is required");
+      return;
+    }
+
+    if (!formData.masterPassword) {
+      toast.error("Master Password is required");
+      return;
+    }
+
     try {
       const result = await dispatch(registerUser({
-        email: formData.email,
-        phone: formData.phone,
+        name: formData.name,
+        userName: formData.email,
+        mobile: formData.phone,
         password: formData.password,
-        promoCode: formData.promoCode || undefined,
+        masterPassword: formData.masterPassword,
       }));
 
       if (result?.payload?.success) {
@@ -94,6 +110,7 @@ const Signup = () => {
       }
     } catch (error) {
       toast.error("An error occurred during registration");
+      console.error("Registration error:", error);
     }
   };
 
@@ -159,14 +176,33 @@ const Signup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
        
-          {/* Email */}
+          {/* Full Name */}
           <div className="space-y-1">
             <label className="text-white text-[11px] font-bold uppercase ml-1">
-              Email Address <span className="text-red-500">*</span>
+              Full Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
-                type="email"
+                type="text"
+                name="name"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 text-black bg-white rounded-md outline-none"
+                placeholder="Enter your full name"
+              />
+              <FaUser className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div className="space-y-1">
+            <label className="text-white text-[11px] font-bold uppercase ml-1">
+              Username <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type="text"
                 name="email"
                 required
                 value={formData.email}
@@ -174,7 +210,7 @@ const Signup = () => {
                 className={`w-full px-4 py-2.5 text-black bg-white rounded-md outline-none ${
                   errors.email ? "border-2 border-red-500" : ""
                 }`}
-                placeholder="Enter your email"
+                placeholder="Enter your username"
               />
               <FaEnvelope className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
             </div>
@@ -269,6 +305,31 @@ const Signup = () => {
             {errors.confirmPassword && (
               <p className="text-red-500 text-xs mt-1 ml-1">{errors.confirmPassword}</p>
             )}
+          </div>
+
+          {/* Master Password */}
+          <div className="space-y-1">
+            <label className="text-white text-[11px] font-bold uppercase ml-1">
+              Master Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type={showMasterPassword ? "text" : "password"}
+                name="masterPassword"
+                required
+                value={formData.masterPassword}
+                onChange={handleChange}
+                className="w-full px-4 py-2.5 text-black bg-white rounded-md outline-none"
+                placeholder="Enter master password"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                onClick={() => setShowMasterPassword(!showMasterPassword)}
+              >
+                {showMasterPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
 
           {/* Promo Code (Optional) */}

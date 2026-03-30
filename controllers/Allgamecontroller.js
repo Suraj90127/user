@@ -4,10 +4,16 @@ import AuthModel from "../models/subAdminModel.js";
 /**
  * 🔴 LIVE ENVIRONMENT ONLY
  */
-const apiUrl = "https://zapcore.live/api";
-const launchUrl = "https://zapcore.live/api/launch-game";
-const key = "7WDK1i6lsLyV1WG461bxw91bgKViYMZl";
+const apiUrl = "https://api-docs.space/api";
+const launchUrl = "https://api-docs.space/api/launch-game";
+const key = "P18eCa60SONhiAazrFHG";
 // const key = "3aqSD5NzX8sKj2MG2CkNS6mqerzJywUW";
+
+const commonHeaders = {
+  "Content-Type": "application/json",
+  "x-domain": "api-docs.space",
+  "x-internal-request": "true",
+};
 
 /* =========================
    CHECK BALANCE (AUTO CREATE USER)
@@ -25,7 +31,11 @@ export const checkBalance = async (req, res) => {
     const response = await axios.post(`${apiUrl}/Userbalance`, {
       playerid,
       key,
-    });
+    },
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  });
 
     return res.json({
       status: true,
@@ -64,7 +74,11 @@ export const transferBalance = async (req, res) => {
     const balRes = await axios.post(`${apiUrl}/Userbalance`, {
       playerid,
       key,
-    });
+    },
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  });
 
     console.log("balResbalRes",balRes);
     
@@ -87,7 +101,11 @@ export const transferBalance = async (req, res) => {
         playerid,
         key,
         opening_balance: -zapBalance,
-      });
+      },
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  });
 
       /* 6️⃣ Rollback if reset fails */
       if (resetRes.data?.status !== true) {
@@ -165,14 +183,22 @@ export const launchGame = async (req, res) => {
     await axios.post(`${apiUrl}/Userbalance`, {
       playerid,
       key,
-    });
+    },
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  });
 
     const response = await axios.post(launchUrl, {
       playerid,
       uid: gameId,
       opening_balance: user.avbalance,
       key,
-    });
+    },
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  });
 
     // console.log("response",response);
     
@@ -196,6 +222,7 @@ export const launchGame = async (req, res) => {
       data: response.data,
     });
   } catch (error) {
+    // console.log("object",error)
     return res.status(500).json({
       status: false,
       message: "Launch error",
@@ -211,7 +238,11 @@ export const getgamedetails = async (req, res) => {
   try {
     const { page = 1, size = 2000 } = req.query;
     const response = await axios.get(
-      `${apiUrl}/getgamedetails?page=${page}&size=${size}`
+      `${apiUrl}/getgamedetails?page=${page}&size=${size}`,
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  }
     );
     return res.json(response.data);
   } catch (error) {
@@ -225,7 +256,11 @@ export const getgamedetails = async (req, res) => {
 export const gameProvider = async (req, res) => {
   try {
     const response = await axios.get(
-      `${apiUrl}/getgamedetails?provider_list=1`
+      `${apiUrl}/getgamedetails?provider_list=1`,
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  }
     );
     return res.json(response.data);
   } catch (error) {
@@ -239,7 +274,11 @@ export const gameProvider = async (req, res) => {
 export const gameType = async (req, res) => {
   try {
     const response = await axios.get(
-      `${apiUrl}/getgamedetails?gametype_list=1`
+      `${apiUrl}/getgamedetails?gametype_list=1`,
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  }
     );
     return res.json(response.data);
   } catch (error) {
@@ -254,10 +293,15 @@ export const gameListByProvider = async (req, res) => {
   try {
     const { provider, page = 1, size = 20 } = req.query;
     const response = await axios.get(
-      `${apiUrl}/getgamedetails?provider=${provider}&page=${page}&size=${size}`
+      `${apiUrl}/getgamedetails?provider=${provider}&page=${page}&size=${size}&key=${key}`,
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  }
     );
     return res.json(response.data);
   } catch (error) {
+    console.log("object",error)
     return res.status(500).json({
       status: false,
       error: error.message,
@@ -269,7 +313,11 @@ export const gameListByGameType = async (req, res) => {
   try {
     const { game_type, page = 1, size = 20 } = req.query;
     const response = await axios.get(
-      `${apiUrl}/getgamedetails?game_type=${game_type}&page=${page}&size=${size}`
+      `${apiUrl}/getgamedetails?game_type=${game_type}&page=${page}&size=${size}`,
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  }
     );
     return res.json(response.data);
   } catch (error) {
@@ -284,7 +332,11 @@ export const gameListByGameTypeAndProvider = async (req, res) => {
   try {
     const { provider, game_type, page = 1, size = 20 } = req.query;
     const response = await axios.get(
-      `${apiUrl}/getgamedetails?provider=${provider}&game_type=${game_type}&page=${page}&size=${size}`
+      `${apiUrl}/getgamedetails?provider=${provider}&game_type=${game_type}&page=${page}&size=${size}`,
+    {
+    headers: commonHeaders,
+    withCredentials: true,
+  }
     );
     return res.json(response.data);
   } catch (error) {
@@ -308,6 +360,9 @@ export const gameHistory = async (req, res) => {
       page,
       size,
       key,
+    }, {
+      headers: commonHeaders,
+      withCredentials: true,
     });
 
     return res.json(response.data);

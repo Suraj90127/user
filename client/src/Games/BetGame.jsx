@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-
+import React, { useState,useEffect } from 'react'
+import {useDispatch,useSelector} from 'react-redux';
+import { getAllGamesProvider } from '../redux/reducer/AllgameReducer'
 import img from '../assets/icons/Joker Teen Patti-min.png'
 const BetGame = () => {
     const [activeTab, setActiveTab] = useState("ALL");
+        const {getAllGamesProviderData}=useSelector((state)=>state.game)
     const games = [
         {
           id: 1,
@@ -78,6 +80,12 @@ const BetGame = () => {
         },
       ]
 
+        const dispatch=useDispatch();
+            useEffect(() => {
+              
+            dispatch(getAllGamesProvider({page:1,limit:20,provider:"btGaming"}));
+            }, [dispatch])
+
   const subCategories = [
     "ALL",
   ]
@@ -85,7 +93,7 @@ const BetGame = () => {
   return (
    
     <div>
-    <nav className="flex flex-wrap font-bold bg-color border-b border-emerald-600 relative text-[12px]">
+    {/* <nav className="flex flex-wrap font-bold bg-color border-b border-emerald-600 relative text-[12px]">
       {subCategories.map((category, index) => (
         <button
           key={index}
@@ -94,7 +102,7 @@ const BetGame = () => {
         >
           {category}
         </button>
-      ))}
+      ))} */}
 
       {/* Search button */}
       {/* <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
@@ -102,20 +110,20 @@ const BetGame = () => {
           <BiSearch className="text-white" size={20} />
         </button>
       </div> */}
-    </nav>
+    {/* </nav> */}
 
   {/* Game grid */}
   {activeTab === "ALL" && (
 
   <div className="container mx-auto p-1 md:p-4 relative">
     <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-4">
-      {games.map((game) => (
+      {getAllGamesProviderData && getAllGamesProviderData?.map((game) => (
         <div key={game.id} className="relative group cursor-pointer">
           <div
             className={` bg-color rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform group-hover:scale-105`}
           >
             <div className="md:h-48 relative flex items-center justify-center">
-                <img src={game.image} alt="game" />
+                <img src={game.icon} alt="game" />
             </div>
             <div className="py-2 text-center text-white font-bold bg-color text-[12px]">{game.title}</div>
           </div>

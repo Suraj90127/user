@@ -663,7 +663,7 @@ import { FaSearchPlus, FaEyeSlash, FaEye, FaHorseHead, FaGamepad, FaHeart, FaThL
 import { IoSearchOutline } from "react-icons/io5";
 import { GiBoxingGlove } from "react-icons/gi";
 import { SiBitcoin } from "react-icons/si";
-import { RiLogoutBoxLine, RiSettings4Line, RiTimeLine, RiUserSettingsLine } from "react-icons/ri";
+import { RiLogoutBoxLine, RiSettings4Line, RiTimeLine, RiUserSettingsLine, RiWalletLine } from "react-icons/ri";
 
 // Redux & API
 import { getUser, loginUser, user_reset } from "../redux/reducer/authReducer";
@@ -864,441 +864,614 @@ const Navbar = ({ onNavItemClick }) => {
     {
       title: "Statements",
       items: [
-        { label: "Unmatched Bets", value: "You have no Unmatched Bets", icon: <MdHistory className="text-yellow-400" />, link: "/unmatched-bets" },
-        { label: "Transactions", value: "You have no Transactions", icon: <MdReceipt className="text-purple-400" />, link: "/transactions" },
-        { label: "Bonus Bets", value: "You have no Match Bets", icon: <FaTicketAlt className="text-pink-400" />, link: "/bonus-bets" },
-        { label: "Open Bets", value: "Betting Profit & Loss", icon: <MdSwapHoriz className="text-orange-400" />, link: "/open-bets" },
+        // { label: "Unmatched Bets", value: "You have no Unmatched Bets", icon: <MdHistory className="text-yellow-400" />, link: "/unmatched-bets" },
+        { label: "Transactions", value: "You have no Transactions", icon: <MdReceipt className="text-purple-400" />, link: "/bet-history" },
+        // { label: "Bonus Bets", value: "You have no Match Bets", icon: <FaTicketAlt className="text-pink-400" />, link: "/bonus-bets" },
+        { label: "Open Bets", value: "Betting Profit & Loss", icon: <MdSwapHoriz className="text-orange-400" />, link: "/p&l" },
         { label: "Account Statement", icon: <MdReceipt className="text-cyan-400" />, link: "/statement" },
-        { label: "Transfer Statement", icon: <MdSwapHoriz className="text-indigo-400" />, link: "/transfer-statement" },
+        { label: "Transfer Statement", icon: <MdSwapHoriz className="text-indigo-400" />, link: "/wallet/withdrawHistory" },
       ]
     },
     {
       title: "Account Settings",
       items: [
-        { label: "Time Settings", icon: <RiTimeLine className="text-gray-400" />, link: "/time-settings" },
-        { label: "Settings", icon: <RiSettings4Line className="text-gray-400" />, link: "/settings" },
-        { label: "Account actions", icon: <RiUserSettingsLine className="text-gray-400" />, link: "/account-actions" },
-        { label: "Change Password", icon: <MdLock className="text-gray-400" />, link: "/change-password" },
+        { label: "Time Settings", icon: <RiTimeLine className="text-gray-400" />, link: "/activity" },
+        { label: "Settings", icon: <RiSettings4Line className="text-gray-400" />, link: "/profile" },
+        { label: "Deposit / withdraw", icon: <RiWalletLine className="text-gray-400" />, link: "/wallet" },
+        { label: "Account actions", icon: <RiUserSettingsLine className="text-gray-400" />, link: "/profile" },
+        { label: "Change Password", icon: <MdLock className="text-gray-400" />, link: "/profile" },
       ]
     }
   ];
 
   return (
-    <div className="w-full sticky top-0 z-50 font-sans" ref={dropdownRef}>
-      {/* Top Header Section */}
-      <header className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#0f172a] shadow-lg border-b border-purple-500/20">
-        <div className="container mx-auto px-3 py-2">
-          <div className="flex items-center justify-between">
-            {/* Logo and Brand */}
-            <Link to="/" className="flex items-center space-x-2 shrink-0">
-              <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">R</span>
-              </div>
-              <div className="hidden sm:block">
-                <h1 className="text-white font-bold text-xl tracking-tight">REDDY</h1>
-                <p className="text-[10px] text-gray-400 -mt-1">SINCE 2010</p>
-              </div>
-            </Link>
-
-            {/* Date and Time */}
-            <div className="hidden md:flex items-center space-x-4 bg-black/30 px-4 py-1.5 rounded-full backdrop-blur-sm">
-              <div className="text-white text-sm font-medium">
-                <span className="text-gray-400">{currentDate}</span>
-                <span className="mx-2 text-gray-600">|</span>
-                <span className="text-yellow-400 font-mono">{currentTime}</span>
-              </div>
-              <span className="text-gray-500">Asia/Calcutta</span>
-            </div>
-
-            {/* Search and Auth Buttons Container */}
-            <div className="flex items-center gap-3">
-              {/* Search Button */}
-              <button 
-                className="text-gray-300 hover:text-white text-xl transition-colors"
-                onClick={() => setSearchbar(!searchbar)}
-              >
-                <IoSearchOutline />
-              </button>
-
-              {/* Auth Section */}
-              {!userInfo ? (
-                <div className="flex items-center gap-3">
-                  <button 
-                    onClick={handleLoginClick}
-                    className="bg-transparent border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black rounded-md px-4 py-1.5 text-sm font-semibold transition-all duration-300"
-                  >
-                    Login
-                  </button>
-                  <button 
-                    onClick={handleSignupClick}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-semibold rounded-md px-4 py-1.5 text-sm hover:shadow-lg transition-all duration-300"
-                  >
-                    Sign Up
-                  </button>
-                  <span className="text-gray-400 text-sm hidden md:inline">EN</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-4">
-                  {/* User Info */}
-                  <div className="hidden md:block bg-black/40 rounded-lg px-4 py-1.5">
-                    <p className="text-xs text-gray-400">Login as</p>
-                    <p className="text-sm text-white font-medium">{userInfo?.userName || userInfo?.mobile || "User"}</p>
-                  </div>
-                  
-                  {/* Balance Info */}
-                  <div className="bg-black/40 rounded-lg px-3 py-1.5 text-right">
-                    <p className="text-[10px] text-gray-400">Available balance</p>
-                    <p className="text-sm font-bold text-green-400">₹{userInfo?.avbalance?.toFixed(2) || "0.00"}</p>
-                  </div>
-
-                  {/* Account Button - Opens Sidebar */}
-                  <button
-                    onClick={() => setShowSidebar(true)}
-                    className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:shadow-lg transition-all duration-300"
-                  >
-                    <BsPersonCircle className="text-lg" />
-                    <span className="hidden sm:inline">Account</span>
-                  </button>
-                </div>
-              )}
-            </div>
+<div className="w-full sticky top-0 z-50 font-sans" ref={dropdownRef}>
+  {/* Top Header Section */}
+  <header className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#0f172a] shadow-xl border-b border-purple-500/30 backdrop-blur-sm">
+    <div className="container mx-auto px-4 py-3">
+      <div className="flex items-center justify-between">
+        {/* Logo and Brand */}
+        <Link to="/" className="flex items-center space-x-3 shrink-0 group">
+          <div className="w-11 h-11 bg-gradient-to-br from-amber-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg transform transition-transform group-hover:scale-105">
+            <span className="text-white font-bold text-2xl">R</span>
           </div>
-        </div>
-      </header>
+          <div className="hidden sm:block">
+            <h1 className="text-white font-bold text-2xl tracking-tight bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              REDDY
+            </h1>
+            <p className="text-[10px] text-gray-400 -mt-1 tracking-wider">EST. 2010</p>
+          </div>
+        </Link>
 
-      {/* Mobile Search Bar */}
-      <AnimatePresence>
-        {searchbar && (
-          <motion.div 
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="bg-gradient-to-r from-[#0f172a] to-[#1e1b4b] overflow-hidden"
+        {/* Date and Time */}
+        <div className="hidden md:flex items-center space-x-4 bg-white/5 px-5 py-2 rounded-full backdrop-blur-md border border-white/10">
+          <div className="text-white text-sm font-medium">
+            <span className="text-gray-300">{currentDate}</span>
+            <span className="mx-2 text-gray-600">•</span>
+            <span className="text-amber-400 font-mono font-semibold">{currentTime}</span>
+          </div>
+          <div className="w-px h-4 bg-white/20"></div>
+          <span className="text-gray-400 text-xs">IST</span>
+        </div>
+
+        {/* Search and Auth Buttons Container */}
+        <div className="flex items-center gap-4">
+          {/* Search Button */}
+          <button 
+            className="text-gray-300 hover:text-white text-2xl transition-all hover:scale-110"
+            onClick={() => setSearchbar(!searchbar)}
           >
-            <div className="p-3">
-              <form onSubmit={handleSearch} className="relative">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search Events (At least 3 letters)..."
-                  className="w-full bg-gray-800 text-white h-11 px-4 pr-12 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 border border-gray-700"
-                />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <IoSearchOutline className="text-yellow-500 text-xl" />
-                </button>
-              </form>
+            <IoSearchOutline />
+          </button>
+
+          {/* Auth Section */}
+          {!userInfo ? (
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={handleLoginClick}
+                className="relative group overflow-hidden bg-transparent border-2 border-amber-500 text-amber-500 hover:text-black rounded-lg px-5 py-2 text-sm font-semibold transition-all duration-300"
+              >
+                <span className="relative z-10">Login</span>
+                <div className="absolute inset-0 bg-amber-500 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+              </button>
+              <button 
+                onClick={handleSignupClick}
+                className="bg-gradient-to-r from-amber-500 to-orange-500 text-black font-semibold rounded-lg px-5 py-2 text-sm hover:shadow-lg hover:shadow-amber-500/25 transition-all duration-300 transform hover:scale-105"
+              >
+                Sign Up
+              </button>
+              <span className="text-gray-400 text-sm hidden md:inline cursor-pointer hover:text-white transition-colors">EN</span>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Bottom Navigation */}
-      <nav className="bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-700">
-        <div className="container mx-auto px-2">
-          <ul 
-            ref={navRef}
-            className="flex items-center gap-1 py-2 overflow-x-auto no-scrollbar"
-          >
-            {navItems.map((item, i) => {
-              const isActive = activeItem === item.name;
-              return (
-                <li key={i} className="relative flex-shrink-0">
-                  <Link
-                    to={item.path}
-                    onClick={() => handleNavItemClick(item.name)}
-                    className={`relative flex items-center gap-1.5 px-3 py-2 rounded-lg transition-all duration-200 text-sm font-medium whitespace-nowrap
-                      ${isActive 
-                        ? "bg-yellow-500 text-black shadow-lg" 
-                        : "text-gray-300 hover:text-white hover:bg-gray-700"
-                      }`}
-                  >
-                    <span className="text-base">{item.icon}</span>
-                    <span>{item.name}</span>
-                    {item.count && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] px-1.5 py-0.5 rounded-full font-bold shadow-sm">
-                        {item.count}
-                      </span>
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </nav>
-
-      {/* Sidebar Menu - Based on 5th screenshot */}
-      <AnimatePresence>
-        {showSidebar && userInfo && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowSidebar(false)}
-              className="fixed inset-0 bg-black/70 z-[100]"
-            />
-            
-            {/* Sidebar */}
-            <motion.div
-              ref={sidebarRef}
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.3 }}
-              className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-gray-900 to-gray-800 shadow-2xl z-[101] overflow-y-auto"
-            >
-              {/* Sidebar Header */}
-              <div className="bg-gradient-to-r from-purple-600 to-pink-600 px-5 py-6 sticky top-0 z-10">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-white text-2xl font-bold">Welcome Bonus</h2>
-                    <div className="flex gap-3 mt-2">
-                      <span className="text-3xl font-bold text-yellow-300">10%</span>
-                      <span className="text-white">Har baar 5%</span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setShowSidebar(false)}
-                    className="text-white hover:text-gray-200 transition-colors"
-                  >
-                    <IoMdClose className="text-2xl" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Quick Links */}
-              <div className="grid grid-cols-2 gap-2 p-4 border-b border-gray-700">
-                {["Sportsbook", "Live Casino", "Slot Games", "Aviator",].map((item, idx) => (
-                  <button
-                    key={idx}
-                    className="bg-gray-800 text-gray-300 text-sm py-2 rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    {item}
-                  </button>
-                ))}
-                <button className="col-span-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-2 rounded-lg mt-2 hover:shadow-lg transition-all">
-                  Continue To Play
-                </button>
-              </div>
-
-              {/* Game Categories */}
-              <div className="flex gap-2 p-4 border-b border-gray-700">
-                {["SPEED CRASH", "HACKSAW GAMING"].map((game, idx) => (
-                  <span key={idx} className="text-xs text-gray-400 bg-gray-800 px-3 py-1 rounded-full">
-                    {game}
-                  </span>
-                ))}
-              </div>
-
-              {/* Game Types */}
-              <div className="flex gap-3 p-4 border-b border-gray-700">
-                {["Originals", "Game Show", "Live Roulette", "Lottery"].map((type, idx) => (
-                  <button
-                    key={idx}
-                    className="text-sm text-gray-300 hover:text-yellow-500 transition-colors"
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-
-              {/* User Info Summary */}
-              <div className="p-4 border-b border-gray-700 bg-gray-800/50">
-                <p className="text-sm text-gray-400">Available Balance:</p>
-                <p className="text-2xl font-bold text-green-400">₹{userInfo?.avbalance?.toFixed(2) || "0.00"}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Last logged in: {new Date().toLocaleString()}
-                </p>
-              </div>
-
-              {/* Dynamic Sections from Screenshot */}
-              {sidebarSections.map((section, sectionIdx) => (
-                <div key={sectionIdx} className="border-b border-gray-700">
-                  <div className="p-4">
-                    <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">
-                      {section.title}
-                    </h3>
-                    <div className="space-y-2">
-                      {section.items.map((item, itemIdx) => (
-                        item.link ? (
-                          <Link
-                            key={itemIdx}
-                            to={item.link}
-                            onClick={() => setShowSidebar(false)}
-                            className="flex items-center justify-between py-2 hover:bg-gray-800 rounded-lg px-2 transition-colors group"
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="text-lg">{item.icon}</span>
-                              <span className="text-sm text-gray-300 group-hover:text-white">
-                                {item.label}
-                              </span>
-                            </div>
-                            {item.value && (
-                              <span className="text-xs text-gray-500">{item.value}</span>
-                            )}
-                          </Link>
-                        ) : (
-                          <div key={itemIdx} className="flex items-center justify-between py-2 px-2">
-                            <div className="flex items-center gap-3">
-                              <span className="text-lg">{item.icon}</span>
-                              <span className="text-sm text-gray-300">{item.label}</span>
-                            </div>
-                            <span className={`text-sm font-semibold ${
-                              item.label === "Net Exposure" ? "text-red-400" : "text-green-400"
-                            }`}>
-                              {item.value}
-                            </span>
-                          </div>
-                        )
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-
-              {/* Account Settings Section */}
-              <div className="p-4">
-                <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">
-                  Account Settings
-                </h3>
-                <div className="space-y-1">
-                  {sidebarSections[2].items.map((item, idx) => (
-                    <Link
-                      key={idx}
-                      to={item.link}
-                      onClick={() => setShowSidebar(false)}
-                      className="flex items-center gap-3 py-2.5 px-2 hover:bg-gray-800 rounded-lg transition-colors group"
-                    >
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-sm text-gray-300 group-hover:text-white">
-                        {item.label}
-                      </span>
-                    </Link>
-                  ))}
-                  
-                  {/* Sign Out Button */}
-                  <button
-                    onClick={logout}
-                    className="flex items-center gap-3 w-full py-2.5 px-2 hover:bg-red-500/10 rounded-lg transition-colors group mt-2"
-                  >
-                    <RiLogoutBoxLine className="text-lg text-red-400" />
-                    <span className="text-sm text-red-400 group-hover:text-red-300">
-                      Sign Out
-                    </span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="p-4 text-center border-t border-gray-700 mt-4">
-                <p className="text-xs text-gray-500">
-                  Register online and play online
-                </p>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Login Popup */}
-      <AnimatePresence>
-        {showPopup && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-6 rounded-xl w-full max-w-md shadow-2xl border border-gray-700"
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">
-                  Welcome Back
-                </h2>
-                <IoMdClose 
-                  className="text-2xl cursor-pointer hover:text-gray-300" 
-                  onClick={() => setShowPopup(false)} 
-                />
+          ) : (
+            <div className="flex items-center gap-4">
+              {/* User Info */}
+              <div className="hidden md:block bg-white/5 rounded-xl px-4 py-2 border border-white/10">
+                <p className="text-xs text-gray-400">Welcome back,</p>
+                <p className="text-sm text-white font-semibold">{userInfo?.userName || userInfo?.mobile || "User"}</p>
               </div>
               
-              <form onSubmit={handleSubmit}>
-                <div className="space-y-4 mb-6">
-                  <div>
-                    <label className="block text-sm mb-2 text-gray-300">Username</label>
-                    <input
-                      type="text"
-                      value={formData.userName}
-                      onChange={(e) => setFormData({...formData, userName: e.target.value})}
-                      className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 border border-gray-700"
-                      placeholder="Enter username"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm mb-2 text-gray-300">Password</label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
-                        className="w-full bg-gray-800 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 border border-gray-700"
-                        placeholder="Enter password"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
-                      >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold py-3 rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
-                >
-                  {loading ? "Logging in..." : "Login"}
-                </button>
-              </form>
-
-              <div className="mt-4 text-center space-y-2">
-                <button className="text-sm text-yellow-500 hover:text-yellow-400" onClick={() => navigate('/forgot-password')}>
-                  Forgot Password?
-                </button>
-                <p className="text-xs text-gray-500">
-                  Don't have an account?{" "}
-                  <button onClick={handleSignupClick} className="text-yellow-500 hover:text-yellow-400">
-                    Sign up now
-                  </button>
+              {/* Balance Info */}
+              <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl px-4 py-2 border border-green-500/20">
+                <p className="text-[10px] text-gray-400">Available balance</p>
+                <p className="text-lg font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+                  ₹{userInfo?.avbalance?.toFixed(2) || "0.00"}
                 </p>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
-      <style>{`
-        .no-scrollbar::-webkit-scrollbar { 
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        
-        @media (max-width: 768px) {
-          .no-scrollbar {
-            -webkit-overflow-scrolling: touch;
-          }
-        }
-      `}</style>
+              {/* Account Button - Opens Sidebar */}
+           <button
+  onClick={() => setShowSidebar(true)}
+  className="group flex items-center gap-2 px-5 py-2.5 
+  bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600
+  text-white rounded-full text-sm font-semibold
+  shadow-md hover:shadow-xl hover:shadow-purple-500/30
+  transition-all duration-300 ease-out
+  hover:scale-105 active:scale-95"
+>
+  <BsPersonCircle className="text-xl transition-transform duration-300 group-hover:rotate-6" />
+
+  <span className="hidden sm:inline tracking-wide">
+    Account
+  </span>
+</button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
+  </header>
+
+  {/* Mobile Search Bar */}
+  <AnimatePresence>
+    {searchbar && (
+      <motion.div 
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        className="bg-gradient-to-r from-[#0f172a] to-[#1e1b4b] border-b border-purple-500/20"
+      >
+        <div className="p-4">
+          <form onSubmit={handleSearch} className="relative">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search events, games, and more..."
+              className="w-full bg-gray-800/50 text-white h-12 px-5 pr-12 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 border border-gray-700 focus:border-transparent backdrop-blur-sm"
+            />
+            <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2">
+              <IoSearchOutline className="text-amber-500 text-2xl" />
+            </button>
+          </form>
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+
+  {/* Bottom Navigation */}
+  <nav className="bg-[#663399] bg-gradient-to-rs from-gray-900/95 to-gray-800/95 backdrop-blur-md border-b border-gray-700/50">
+    <div className="container mx-auto px-4">
+      <ul 
+        ref={navRef}
+        className="flex items-center gap-2 py-3 overflow-x-auto no-scrollbar"
+      >
+        {navItems.map((item, i) => {
+          const isActive = activeItem === item.name;
+          return (
+            <li key={i} className="relative flex-shrink-0">
+              <Link
+                to={item.path}
+                onClick={() => handleNavItemClick(item.name)}
+                className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 text-sm font-medium whitespace-nowrap
+                  ${isActive 
+                    ? "bg-gradient-to-r from-amber-500 to-orange-500 text-black shadow-lg shadow-amber-500/25" 
+                    : "text-gray-300 hover:text-white hover:bg-white/10"
+                  }`}
+              >
+                <span className="text-lg">{item.icon}</span>
+                <span>{item.name}</span>
+                {item.count && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold shadow-lg animate-pulse">
+                    {item.count}
+                  </span>
+                )}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </nav>
+
+  {/* Sidebar Menu */}
+  <AnimatePresence>
+    {showSidebar && userInfo && (
+      <>
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setShowSidebar(false)}
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100]"
+        />
+        
+    
+
+    <motion.div
+      ref={sidebarRef}
+      initial={{ x: "100%" }}
+      animate={{ x: 0 }}
+      exit={{ x: "100%" }}
+      transition={{ type: "spring", damping: 20, stiffness: 180 }}
+      className="fixed right-0 top-0 h-full w-full max-w-md
+      bg-gradient-to-b from-[#0f172a] via-[#020617] to-black
+      backdrop-blur-xl border-l border-white/10
+      shadow-[0_0_40px_rgba(0,0,0,0.8)]
+      z-[101] overflow-y-auto"
+    >
+
+      {/* HEADER */}
+   <div className="relative bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#020617] px-6 py-8 sticky top-0 z-10 border-b border-white/10">
+
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.35),transparent_60%)]"></div>
+
+  <div className="flex justify-between items-start relative z-10">
+
+    <div>
+      <h2 className="text-white text-2xl font-bold">
+        Welcome Bonus
+      </h2>
+
+      <div className="flex items-center gap-3 mt-2">
+        <span className="text-4xl font-bold text-yellow-400">
+          10%
+        </span>
+
+        <span className="text-gray-300 text-sm">
+          up to ₹5,000
+        </span>
+      </div>
+
+      <p className="text-gray-400 text-sm mt-2">
+        Har baar 5% cashback
+      </p>
+    </div>
+
+    <button
+      onClick={() => setShowSidebar(false)}
+      className="bg-white/10 backdrop-blur-md rounded-full p-2 hover:bg-white/20 transition"
+    >
+      <IoMdClose className="text-2xl text-white" />
+    </button>
+
+  </div>
+</div>
+
+
+      {/* QUICK LINKS */}
+
+      <div className="grid grid-cols-2 gap-3 p-6 border-b border-white/10">
+
+        {[
+          { label: "🏏 Sportsbook", path: "/sports" },
+          { label: "🎰 Live Casino", path: "/games/liveCasino" },
+          { label: "🎮 Slot Games", path: "/games/SlotsGames" },
+          { label: "✈️ Aviator", path: "/games/OriginalsGames" }
+        ].map((item, idx) => (
+
+          <Link
+            key={idx}
+            to={item.path}
+            onClick={() => setShowSidebar(false)}
+            className="bg-white/5 backdrop-blur-md
+            text-gray-200 text-sm py-3 rounded-xl
+            hover:bg-white/10 transition-all
+            border border-white/10
+            hover:border-purple-500/50
+            hover:shadow-lg hover:shadow-purple-500/20
+            text-center"
+          >
+            {item.label}
+          </Link>
+
+        ))}
+
+        <button
+          onClick={() => {
+            navigate("/cricket");
+            setShowSidebar(false);
+          }}
+          className="col-span-2
+          bg-gradient-to-r from-amber-400 via-orange-500 to-red-500
+          text-black font-bold py-3 rounded-xl mt-2
+          hover:shadow-xl hover:shadow-orange-500/40
+          transition-all transform hover:scale-[1.03]"
+        >
+          🎮 Continue To Play
+        </button>
+
+      </div>
+
+
+      {/* GAME CATEGORIES */}
+
+      <div className="flex gap-3 p-6 border-b border-white/10 flex-wrap">
+
+        {[
+          { label: "⚡ SPEED CRASH", path: "/games/OriginalsGames" },
+          { label: "🎯 HACKSAW GAMING", path: "/games/OriginalsGames" },
+          { label: "🎲 EVOLUTION", path: "/games/liveCasino" },
+          { label: "🎪 PRAGMATIC", path: "/games/SlotsGames" }
+        ].map((game, idx) => (
+
+          <button
+            key={idx}
+            onClick={() => {
+              navigate(game.path);
+              setShowSidebar(false);
+            }}
+            className="text-xs text-gray-300
+            bg-white/5 backdrop-blur-md
+            px-4 py-2 rounded-full
+            hover:bg-purple-600/20 hover:text-white
+            transition-all cursor-pointer
+            border border-white/10
+            hover:border-purple-500"
+          >
+            {game.label}
+          </button>
+
+        ))}
+
+      </div>
+
+
+      {/* GAME TYPES */}
+
+      <div className="flex gap-4 p-6 border-b border-white/10 flex-wrap">
+
+        {[
+          { label: "🎲 Originals", path: "/games/OriginalsGames" },
+          { label: "🎭 Game Show", path: "/games/GameShowdata" },
+          { label: "🎯 Live Roulette", path: "/games/liveCasino" },
+          { label: "🎫 Lottery", path: "/games/BingoGames" }
+        ].map((type, idx) => (
+
+          <button
+            key={idx}
+            onClick={() => {
+              navigate(type.path);
+              setShowSidebar(false);
+            }}
+            className="text-sm text-gray-300 hover:text-amber-500 transition-colors font-medium"
+          >
+            {type.label}
+          </button>
+
+        ))}
+
+      </div>
+
+
+      {/* BALANCE CARD */}
+
+      <div className="p-6 border-b border-white/10
+      bg-gradient-to-r from-green-500/10 to-emerald-500/10">
+
+        <p className="text-sm text-gray-400 mb-1">
+          Available Balance
+        </p>
+
+        <p className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
+          ₹{userInfo?.avbalance?.toFixed(2) || "0.00"}
+        </p>
+
+        <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500"></span>
+          Last active: {new Date().toLocaleString()}
+        </p>
+
+      </div>
+
+
+      {/* DYNAMIC SECTIONS */}
+
+      {sidebarSections.map((section, sectionIdx) => (
+
+        <div key={sectionIdx} className="border-b border-white/10">
+
+          <div className="p-6">
+
+            <h3 className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-4">
+              {section.title}
+            </h3>
+
+            <div className="space-y-3">
+
+              {section.items.map((item, itemIdx) => (
+
+                item.link ? (
+
+                  <Link
+                    key={itemIdx}
+                    to={item.link}
+                    onClick={() => setShowSidebar(false)}
+                    className="flex items-center justify-between py-2
+                    hover:bg-white/5 rounded-xl px-3 transition-all group"
+                  >
+
+                    <div className="flex items-center gap-3">
+
+                      <span className="text-xl">{item.icon}</span>
+
+                      <span className="text-sm text-gray-300 group-hover:text-white font-medium">
+                        {item.label}
+                      </span>
+
+                    </div>
+
+                    {item.value && (
+                      <span className="text-xs text-gray-500">
+                        {item.value}
+                      </span>
+                    )}
+
+                  </Link>
+
+                ) : (
+
+                  <div
+                    key={itemIdx}
+                    className="flex items-center justify-between py-2 px-3"
+                  >
+
+                    <div className="flex items-center gap-3">
+
+                      <span className="text-xl">{item.icon}</span>
+
+                      <span className="text-sm text-gray-300">
+                        {item.label}
+                      </span>
+
+                    </div>
+
+                    <span
+                      className={`text-sm font-bold ${
+                        item.label === "Net Exposure"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      }`}
+                    >
+                      {item.value}
+                    </span>
+
+                  </div>
+
+                )
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      ))}
+
+
+      {/* SIGN OUT */}
+
+      <div className="p-6">
+
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 w-full py-3 px-4
+          hover:bg-red-500/10 rounded-xl transition-all
+          group border border-red-500/20 hover:border-red-500/40"
+        >
+
+          <RiLogoutBoxLine className="text-xl text-red-400" />
+
+          <span className="text-sm text-red-400 group-hover:text-red-300 font-medium">
+            Sign Out
+          </span>
+
+        </button>
+
+      </div>
+
+
+      {/* FOOTER */}
+
+      <div className="p-6 text-center border-t border-white/10">
+
+        <p className="text-xs text-gray-500">
+          🎲 Play responsibly | 18+ only
+        </p>
+
+        <p className="text-xs text-gray-600 mt-2">
+          Register online and play online
+        </p>
+
+      </div>
+
+    </motion.div>
+  
+
+      </>
+    )}
+  </AnimatePresence>
+
+  {/* Login Popup */}
+  <AnimatePresence>
+    {showPopup && (
+      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.9, opacity: 0, y: 20 }}
+          className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-8 rounded-2xl w-full max-w-md shadow-2xl border border-gray-700"
+        >
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+                Welcome Back
+              </h2>
+              <p className="text-sm text-gray-400 mt-1">Login to your account</p>
+            </div>
+            <IoMdClose 
+              className="text-2xl cursor-pointer hover:text-gray-300 transition-colors" 
+              onClick={() => setShowPopup(false)} 
+            />
+          </div>
+          
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-5 mb-8">
+              <div>
+                <label className="block text-sm mb-2 text-gray-300 font-medium">Username</label>
+                <input
+                  type="text"
+                  value={formData.userName}
+                  onChange={(e) => setFormData({...formData, userName: e.target.value})}
+                  className="w-full bg-gray-800/50 text-white px-5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 border border-gray-700 focus:border-transparent transition-all"
+                  placeholder="Enter your username"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm mb-2 text-gray-300 font-medium">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="w-full bg-gray-800/50 text-white px-5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 border border-gray-700 focus:border-transparent transition-all"
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold py-3 rounded-xl hover:shadow-lg hover:shadow-amber-500/25 transition-all disabled:opacity-50 transform hover:scale-[1.02]"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin"></div>
+                  Logging in...
+                </div>
+              ) : (
+                "Login"
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center space-y-3">
+            <button className="text-sm text-amber-500 hover:text-amber-400 transition-colors" onClick={() => navigate('/forgot-password')}>
+              Forgot Password?
+            </button>
+            <div className="pt-3">
+              <p className="text-xs text-gray-500">
+                Don't have an account?{" "}
+                <button onClick={handleSignupClick} className="text-amber-500 hover:text-amber-400 font-medium">
+                  Sign up now
+                </button>
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    )}
+  </AnimatePresence>
+
+  <style>{`
+    .no-scrollbar::-webkit-scrollbar { 
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    @media (max-width: 768px) {
+      .no-scrollbar {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  `}</style>
+</div>
   );
 };
 

@@ -3,6 +3,7 @@ import {
   changePasswordByDownline,
   changePasswordBySelf,
   createSubAdmin,
+  createSubAdminUser,
   deleteSubAdmin,
   forceLogoutUser,
   getAgentTransactionHistory,
@@ -35,6 +36,7 @@ const router = express.Router();
 
 // Only logged-in users can create sub-admins
 router.post("/sub-admin/create", adminAuthMiddleware, createSubAdmin);
+router.post("/sub-admin-user/create",  createSubAdminUser);
 router.post("/sub-admin/login", loginSubAdmin);
 router.get("/sub-admin/getuserbyid", adminAuthMiddleware, getSubAdmin);
 

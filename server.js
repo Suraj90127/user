@@ -26,6 +26,7 @@ import Allgame from "./routes/Allgameroutes.js"
 import { cronJobGame1p } from "./controllers/cronJobs.js";
 import { setupWebSocket } from "./socket/bettingSocket.js"; // ✅ New file for WebSocket
 
+
 dotenv.config();
 connectDB();
 cronJobGame1p();
@@ -64,8 +65,25 @@ app.use("/api", marketAnalizeRoutes); // Ensure this import is defined
 app.use("/api",casinoRoutes);
 app.use("/api/game",Allgame);
 
+function getClientIP(req) {
+  let ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
+  if (ip.includes(",")) {
+    ip = ip.split(",")[0];
+  }
 
+  ip = ip.replace("::ffff:", "");
+
+  return ip;
+}
+
+app.get("/ip", (req, res) => {
+  const ip = getClientIP(req);
+
+  res.json({
+    ip: ip
+  });
+});
 // Static file serving
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,10 +91,10 @@ const __dirname = path.dirname(__filename);
 // app.get("*", (req, res) =>
 //   res.sendFile(path.join(__dirname, "../dashboard/dist/index.html"))
 // );
-app.use(express.static(path.join(__dirname, "./client/dist")));
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "./client/dist/index.html"))
-);
+// app.use(express.static(path.join(__dirname, "./client/dist")));
+// app.get("*", (req, res) =>
+//   res.sendFile(path.join(__dirname, "./client/dist/index.html"))
+// );
 
 // ✅ Setup WebSocket
 setupWebSocket(server); // 🧠 Pass server to WebSocket file

@@ -80,6 +80,23 @@ export const getAllGames = createAsyncThunk(
     }
   }
 );
+/* ===========================
+   GET ALL GAMES PROVIDER
+=========================== */
+export const getAllGamesProvider = createAsyncThunk(
+  "game/getAllGamesProvider",
+  async ({ page = 1, limit = 20,provider="evolutionlive" } = {}, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get(
+        `/game/get/all-game-provider?page=${page}&size=${limit}&provider=${provider}`,
+        { withCredentials: true }
+      );
+      return data.data || [];
+    } catch {
+      return rejectWithValue("Failed to fetch games");
+    }
+  }
+);
 
 /* ===========================
    SLICE
@@ -179,6 +196,19 @@ const gameSlice = createSlice({
         state.filteredGames = action.payload;
       })
       .addCase(getAllGames.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      /* GET ALL GAMES provider */
+      .addCase(getAllGamesProvider.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllGamesProvider.fulfilled, (state, action) => {
+        state.loading = false;
+        state.getAllGamesProviderData = action.payload;
+        state.filteredGamesProvider = action.payload;
+      })
+      .addCase(getAllGamesProvider.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

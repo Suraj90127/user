@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-
+import React, { useState,useEffect } from 'react'
+import {useDispatch,useSelector} from 'react-redux';
+import { getAllGamesProvider ,launchGame} from '../redux/reducer/AllgameReducer'
+import { useNavigate } from 'react-router-dom';
 import img from '../assets/icons/Joker Teen Patti-min.png'
 const Ezugi = () => {
     const [activeTab, setActiveTab] = useState("Black Jack");
+        const {getAllGamesProviderData}=useSelector((state)=>state.game)
     const games = [
         {
           id: 1,
@@ -77,7 +80,13 @@ const Ezugi = () => {
           bgColor: "bg-emerald-700",
         },
       ]
-
+      const navigate=useNavigate();
+      const {userInfo}=useSelector((state)=>state.auth);
+  const dispatch=useDispatch();
+      useEffect(() => {
+        
+      dispatch(getAllGamesProvider({page:1,limit:20,provider:"ezugi"}));
+      }, [dispatch])
   const subCategories = [
     "Black Jack",
     "Roulette",
@@ -85,11 +94,35 @@ const Ezugi = () => {
     "Game Show",
     "other",
   ]
-
+const handlePlayGame = async (game) => {
+        
+        if (!userInfo) {
+          navigate("/login", {
+            state: { redirectTo: `/horse-racing || ""}` },
+          });
+          return;
+        }
+      
+        try {
+          await dispatch(
+            launchGame({ gameId: game.game_uid || game.id })
+          ).unwrap();
+      
+          navigate(`/play/${game.game_uid || game.id}`, {
+            state: {
+              gameUrl: game.game_url,
+              gameName: game.game_name,
+              provider: game.provider,
+            },
+          });
+        } catch (err) {
+          alert(err || "Failed to launch game");
+        }
+      };
   return (
    
     <div>
-    <nav className="flex overflow-auto font-bold bg-color border-b border-emerald-600 relative text-[12px]">
+    {/* <nav className="flex overflow-auto font-bold bg-color border-b border-emerald-600 relative text-[12px]">
       {subCategories.map((category, index) => (
         <button
           key={index}
@@ -98,7 +131,7 @@ const Ezugi = () => {
         >
           {category}
         </button>
-      ))}
+      ))} */}
 
       {/* Search button */}
       {/* <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
@@ -106,20 +139,20 @@ const Ezugi = () => {
           <BiSearch className="text-white" size={20} />
         </button>
       </div> */}
-    </nav>
+    {/* </nav> */}
 
   {/* Game grid */}
   {activeTab === "Black Jack" && (
 
   <div className="container mx-auto p-1 md:p-4 relative">
     <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-4">
-      {games.map((game) => (
-        <div key={game.id} className="relative group cursor-pointer">
+      {getAllGamesProviderData && getAllGamesProviderData?.map((game) => (
+        <div key={game.id} className="relative group cursor-pointer" onClick={() => handlePlayGame(game)}>
           <div
             className={` bg-color rounded-lg overflow-hidden shadow-lg transition-transform duration-300 transform group-hover:scale-105`}
           >
             <div className="md:h-48 relative flex items-center justify-center">
-                <img src={game.image} alt="game" />
+                <img src={game.icon} alt="game" />
             </div>
             <div className="py-2 text-center text-white font-bold bg-color text-[12px] whitespace-nowrap">{game.title}</div>
           </div>

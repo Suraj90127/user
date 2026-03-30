@@ -1,6 +1,6 @@
 :root {
-  --color-green-start: #14805e;
-    --color-green-end: #184438;
+  --color-green-start: #2050ab;
+    --color-green-end: #162240;
     --color-blue-start: #315195;
     --color-blue-end: #14213D;
 
@@ -83,13 +83,13 @@ body {
 }
 
 .loader:before {
-  background: linear-gradient(#14805e, #36cc9c);
+  background: linear-gradient(#2050ab, #36cc9c);
   width: 50px;
 }
 
 .loader:after {
   animation-delay: 0.5s;
-  background: linear-gradient(to top, #14805e, #36cc9c);
+  background: linear-gradient(to top, #2050ab, #36cc9c);
   width: 50px;
 }
 
