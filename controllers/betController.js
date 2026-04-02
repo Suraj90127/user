@@ -943,7 +943,7 @@ export const updateFancyBetResult = async (req, res) => {
       // console.log("bets", bets)
 
       if (!bets.length) {
-        console.log(`No ${gameType} bets found with status 0`);
+        // console.log(`No ${gameType} bets found with status 0`);
         continue;
       }
 

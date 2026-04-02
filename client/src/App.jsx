@@ -44,7 +44,6 @@ import Events from "./Account/Events";
 import EventMatches from "./Account/EventMatches";
 import ProfitHistory from "./Account/ProfitHistory";
 import OpenBet from "./pages/OpenBet";
-// import Register from "./pages/Regiterpage";
 import ForgotPassword from "./pages/Forgetpassword";
 import Casinogame from "./Games/Casinogame";
 import Originalgames from "./Games/Originalgames";
@@ -61,7 +60,6 @@ function App() {
         {/* ================= PUBLIC ROUTES WITHOUT LAYOUT ================= */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
-        {/* <Route path="/register" element={<Register />} /> */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         
         {/* ================= MAIN LAYOUT ROUTES ================= */}

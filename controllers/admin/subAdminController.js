@@ -239,36 +239,27 @@ export const createSubAdmin = async (req, res) => {
 export const createSubAdminUser = async (req, res) => {
   try {
 
-    // console.log("req.body", req.body)
+    console.log("req.body", req.body)
     // ✅ Destructure request body
     const {
       name,
       userName ,
       accountType= "user",
       commition,
-      balance,
       exposureLimit,
-      creditReference,
       rollingCommission,
       mobile,
       password,
-      masterPassword,
       partnership,
+      invite,
     } = req.body;
 
-    // console.log("Creating SubAdmin:", req.body);
+    if(!invite){
+      invite: "41957C8D"
+    }
 
     // ✅ Generate a Unique Code for Referral
     const uniqueCode = crypto.randomBytes(4).toString("hex").toUpperCase(); // Example: 9F3A7B2C
-
-  
-
-
-
-    // ✅ Role-based validation for creating sub-admins
-  
-
-   
 
 
     // ✅ Check if user already exists (by username or phone)
@@ -277,7 +268,9 @@ export const createSubAdminUser = async (req, res) => {
     if (existingSubAdmin) {
       return res.status(400).json({ message: `${userName} already exists` });
     }
-    const profit = balance - creditReference;
+    // const profit = balance - creditReference;
+
+    let bonus = 100
 
 
 
@@ -287,59 +280,67 @@ export const createSubAdminUser = async (req, res) => {
       userName,
       account: accountType,
       commition,
-      balance,
+      balance:bonus,
       exposureLimit,
       creditReference:0,
       profitLoss: 0,
-      avbalance: 0,
-      totalAvbalance: 0,
+      avbalance: bonus,
+      totalAvbalance: bonus,
       rollingCommission,
       code: uniqueCode,
-      invite: "41957C8D", // Assigning the parent admin's referral code
+      invite, // Assigning the parent admin's referral code
       phone: mobile,
       password,
       role: accountType,
-      masterPassword,
       partnership,
     });
 
 
 
     await subAdmin.save();
-    // await TransactionHistory.create({
-    //   userId: subAdmin._id,
-    //   userName: subAdmin.userName,
-    //   withdrawl: 0,
-    //   deposite: balance,
-    //   amount: balance,
-    //   remark: "Opening Balance",
-    //   from: admin.userName,
-    //   to: subAdmin.userName,
-    //   invite: admin.code,
-    // });
-
-
-   
-
-
-    // Generate token
-    const token = await createToken({
-      id: subAdmin._id,
-      role: subAdmin.role,
-      user: subAdmin,
+    await TransactionHistory.create({
+      userId: subAdmin._id,
+      userName: subAdmin.userName,
+      withdrawl: 0,
+      deposite: bonus,
+      amount: bonus,
+      remark: "Signup Bonus",
+      from: "Signup Bonus",
+      to: subAdmin.userName,
+      invite: invite,
     });
+      const sessionToken = crypto.randomBytes(32).toString('hex');
+
+    const token = jwt.sign(
+      {
+        id: subAdmin._id,
+        role: subAdmin.role,
+        sessionToken: sessionToken
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("auth", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
+
 
     return res.status(201).json({
       success: true,
       message: `${accountType} created successfully`,
       token: token,
+      data: subAdmin,
       user: subAdmin,
     });
   } catch (error) {
     console.error("Create SubAdmin Error:", error);
     return res
       .status(500)
-      .json({ message: "Server error", error: error.message });
+      .json({ message: error.message, error: error.message });
   }
 };
 

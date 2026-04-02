@@ -30,7 +30,9 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await api.post("/sub-admin-user/create", userData);
+      const response = await api.post("/sub-admin-user/create", userData,{
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -202,6 +204,8 @@ const userSlice = createSlice({
         })
         .addCase(registerUser.fulfilled, (state, action) => {
           state.loading = false;
+        state.user = action.payload.data;
+        state.userInfo = action.payload.data;
           state.success = true;
           state.message = action.payload.message;
         })

@@ -41,19 +41,10 @@ const AllSportsList = [
   { name: "Soccer", link: "/soccer", icon: MdSportsSoccer, hasArrow: false, count: 7 },
   { name: "Tennis", link: "/tennis", icon: MdSportsTennis, hasArrow: false, count: 1 },
   
-  // { name: "Sports Book", link: "/sports-book", icon: BsShieldShaded, hasArrow: false },
-  // { name: "Horse Racing", link: "/horse-racing", icon: FaHorseHead, hasArrow: false },
- 
-  // { name: "Int Casino", link: "/int-casino", icon: MdOutlineHistoryEdu, hasArrow: false },
-  // { name: "Virtual", link: "/virtual", icon: MdOutlineSportsEsports, hasArrow: true },
-  // { name: "Boxing", link: "/boxing", icon: GiBoxingGlove, hasArrow: true },
-  // { name: "Basketball", link: "/basketball", icon: MdSportsBasketball, hasArrow: true, count: 5 },
-  // { name: "Kabaddi", link: "/kabaddi", icon: MdSportsKabaddi, hasArrow: false },
-
 
   { name: "OriginalsGames", link: "/games/OriginalsGames", icon: FaGamepad, hasArrow: false },
   { name: "LiveCasino", link: "/games/liveCasino", icon: MdLiveTv, hasArrow: false },
-  // { name: "Sexy", link: "/games/sexy", icon: FaHeart, hasArrow: false },
+  { name: "Sexy", link: "/games/sexy", icon: FaHeart, hasArrow: false },
   { name: "Exclusivegame", link: "/games/Exclusivegame", icon: MdStars, hasArrow: false },
   { name: "Hotgame", link: "/games/Hotgame", icon: MdWhatshot, hasArrow: false },
   { name: "Toppicker", link: "/games/Toppicker", icon: MdEmojiEvents, hasArrow: false },
@@ -61,13 +52,10 @@ const AllSportsList = [
   { name: "TableGames", link: "/games/TableGames", icon: MdTableBar, hasArrow: false },
   { name: "SlotsGames", link: "/games/SlotsGames", icon: FaThLarge, hasArrow: false },
   { name: "BingoGames", link: "/games/BingoGames", icon: MdCasino, hasArrow: false },
-
-
-
-  // { name: "WhatsApp", link: "https://wa.me/", icon: FaWhatsapp, hasArrow: false, color: "text-green-600", external: true },
-  // { name: "Instagram", link: "https://instagram.com/", icon: FaInstagram, hasArrow: false, color: "text-pink-600", external: true },
-  // { name: "Telegram", link: "https://t.me/", icon: FaTelegram, hasArrow: false, color: "text-blue-500", external: true },
-  // { name: "Chat With us", link: "/support", icon: IoMdChatbubbles, hasArrow: false, badge: "Live" },
+  { name: "WhatsApp", link: "https://wa.me/", icon: FaWhatsapp, hasArrow: false, color: "text-green-600", external: true },
+  { name: "Instagram", link: "https://instagram.com/", icon: FaInstagram, hasArrow: false, color: "text-pink-600", external: true },
+  { name: "Telegram", link: "https://t.me/", icon: FaTelegram, hasArrow: false, color: "text-blue-500", external: true },
+  { name: "Chat With us", link: "/support", icon: IoMdChatbubbles, hasArrow: false, badge: "Live" },
 
 
   

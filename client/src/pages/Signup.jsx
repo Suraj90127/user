@@ -5,20 +5,23 @@ import { IoMdClose } from "react-icons/io";
 import { MdOutlineLogin, MdLock } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams,useSearchParams  } from "react-router-dom";
 import { registerUser, getWhatsappNumber } from "../redux/reducer/authReducer";
 
 const Signup = () => {
+  const [searchParams] = useSearchParams();
+const invite = searchParams.get("invite");
+
+console.log("invite", invite);
+  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [showMasterPassword, setShowMasterPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
-    masterPassword: "",
     promoCode: "",
   });
   const [errors, setErrors] = useState({});
@@ -55,12 +58,12 @@ const Signup = () => {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
-    } else if (!/(?=.*[A-Z])/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one uppercase letter";
-    } else if (!/(?=.*[a-z])/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one lowercase letter";
-    } else if (!/(?=.*\d)/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one number";
+    // } else if (!/(?=.*[A-Z])/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one uppercase letter";
+    // } else if (!/(?=.*[a-z])/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one lowercase letter";
+    // } else if (!/(?=.*\d)/.test(formData.password)) {
+    //   newErrors.password = "Password must contain at least one number";
     }
 
     // Confirm Password validation
@@ -78,6 +81,9 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+  
+    
+
     if (!validateForm()) {
       toast.error("Please fix the errors before submitting");
       return;
@@ -88,23 +94,18 @@ const Signup = () => {
       return;
     }
 
-    if (!formData.masterPassword) {
-      toast.error("Master Password is required");
-      return;
-    }
-
     try {
       const result = await dispatch(registerUser({
         name: formData.name,
         userName: formData.email,
         mobile: formData.phone,
         password: formData.password,
-        masterPassword: formData.masterPassword,
+        invite:formData.promoCode
       }));
 
       if (result?.payload?.success) {
         toast.success(result.payload.message || "Registration successful! Please login.");
-        setTimeout(() => navigate("/login", { replace: true }), 1500);
+        setTimeout(() => navigate("/", { replace: true }), 1500);
       } else {
         toast.error(result?.payload?.message || "Registration failed");
       }
@@ -307,31 +308,6 @@ const Signup = () => {
             )}
           </div>
 
-          {/* Master Password */}
-          <div className="space-y-1">
-            <label className="text-white text-[11px] font-bold uppercase ml-1">
-              Master Password <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <input
-                type={showMasterPassword ? "text" : "password"}
-                name="masterPassword"
-                required
-                value={formData.masterPassword}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 text-black bg-white rounded-md outline-none"
-                placeholder="Enter master password"
-              />
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                onClick={() => setShowMasterPassword(!showMasterPassword)}
-              >
-                {showMasterPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-          </div>
-
           {/* Promo Code (Optional) */}
           <div className="space-y-1">
             <label className="text-white text-[11px] font-bold uppercase ml-1">
@@ -341,7 +317,7 @@ const Signup = () => {
               <input
                 type="text"
                 name="promoCode"
-                value={formData.promoCode}
+                value={invite}
                 onChange={handleChange}
                 className="w-full px-4 py-2.5 text-black bg-white rounded-md outline-none"
                 placeholder="Enter promo code if you have one"
@@ -355,13 +331,13 @@ const Signup = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-2.5 rounded-full flex items-center justify-center gap-2 hover:from-red-700 hover:to-red-800 transition-all shadow-lg disabled:opacity-50"
+              className="w-full cursor-pointer bg-gradient-to-r from-red-600 to-red-700 text-white font-bold py-2.5 rounded-full flex items-center justify-center gap-2 hover:from-red-700 hover:to-red-800 transition-all shadow-lg disabled:opacity-50"
             >
               {loading ? "Creating Account..." : "SIGN UP"}
               <FaUserPlus size={18} />
             </button>
 
-            <button
+            {/* <button
               type="button"
               onClick={handleWhatsapp}
               disabled={whatsappLoading}
@@ -369,7 +345,7 @@ const Signup = () => {
             >
               <FaWhatsapp size={20} />
               {whatsappLoading ? "Loading..." : "Register With WhatsApp"}
-            </button>
+            </button> */}
           </div>
 
           {/* Login Link */}
