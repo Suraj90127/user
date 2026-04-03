@@ -887,7 +887,7 @@ const Navbar = ({ onNavItemClick }) => {
   return (
 <div className="w-full sticky top-0 z-50 font-sans" ref={dropdownRef}>
   {/* Top Header Section */}
-  <header className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#0f172a] shadow-xl border-b border-purple-500/30 backdrop-blur-sm">
+  <header className="bg-gradient-to-r from-[#6e081d] via-[#6e081d] to-[#6e081d] shadow-xl border-b border-purple-500/30 backdrop-blur-sm">
     <div className="container mx-auto px-4 py-3">
       <div className="flex items-center justify-between">
         {/* Logo and Brand */}
@@ -962,7 +962,7 @@ const Navbar = ({ onNavItemClick }) => {
            <button
   onClick={() => setShowSidebar(true)}
   className="group flex items-center gap-2 px-5 py-2.5 
-  bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600
+  bg-red-600
   text-white rounded-full text-sm font-semibold
   shadow-md hover:shadow-xl hover:shadow-purple-500/30
   transition-all duration-300 ease-out
@@ -988,7 +988,7 @@ const Navbar = ({ onNavItemClick }) => {
         initial={{ height: 0, opacity: 0 }}
         animate={{ height: "auto", opacity: 1 }}
         exit={{ height: 0, opacity: 0 }}
-        className="bg-gradient-to-r from-[#0f172a] to-[#1e1b4b] border-b border-purple-500/20"
+        className="bg-gradient-to-r from-[#6e081d] to-[#6e081d] border-b border-purple-500/20"
       >
         <div className="p-4">
           <form onSubmit={handleSearch} className="relative">
@@ -1009,7 +1009,7 @@ const Navbar = ({ onNavItemClick }) => {
   </AnimatePresence>
 
   {/* Bottom Navigation */}
-  <nav className="bg-[#663399] bg-gradient-to-rs from-gray-900/95 to-gray-800/95 backdrop-blur-md border-b border-gray-700/50">
+  <nav className="bg-black bg-gradient-to-rs from-gray-900/95 to-gray-800/95 backdrop-blur-md border-b border-gray-700/50">
     <div className="container mx-auto px-4">
       <ul 
         ref={navRef}
@@ -1065,14 +1065,14 @@ const Navbar = ({ onNavItemClick }) => {
       exit={{ x: "100%" }}
       transition={{ type: "spring", damping: 20, stiffness: 180 }}
       className="fixed right-0 top-0 h-full w-full max-w-md
-      bg-gradient-to-b from-[#0f172a] via-[#020617] to-black
+      bg-gradient-to-b from-[#6e081d] via-[#020617] to-black
       backdrop-blur-xl border-l border-white/10
       shadow-[0_0_40px_rgba(0,0,0,0.8)]
       z-[101] overflow-y-auto"
     >
 
       {/* HEADER */}
-   <div className="relative bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#020617] px-6 py-8 sticky top-0 z-10 border-b border-white/10">
+   <div className="relative bg-gradient-to-r from-[#6e081d] via-[#6e081d] to-[#020617] px-6 py-8 sticky top-0 z-10 border-b border-white/10">
 
   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,85,247,0.35),transparent_60%)]"></div>
 

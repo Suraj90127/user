@@ -67,7 +67,7 @@ function App() {
           <div className="flex flex-col">
             <Navbar />
             <MobileNavigation />
-            <div className="flex flex-1 relative">
+            <div className="flex flex-1 relative md:w-[90%] w-full md:m-auto">
               {/* Sidebar nav */}
               <Sidebar />
 
