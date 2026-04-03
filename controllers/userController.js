@@ -363,9 +363,9 @@ export const getUserBankDetails = async (req, res) => {
 export const userWithdrawal = async (req, res) => {
   try {
     const { id } = req;
-    const {amount, paymentMethod } = req.body;
+    const {amount, bankAccountId } = req.body;
 
-    if (!amount || !paymentMethod) {
+    if (!amount || !bankAccountId) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -384,7 +384,7 @@ export const userWithdrawal = async (req, res) => {
       return res.status(400).json({ message: "Insufficient balance" });
     }
 
-    const accountDetails = await Bank.findOne({ userId: id });
+    const accountDetails = await Bank.findOne({ _id: bankAccountId });
     if (!accountDetails) {
       return res.status(404).json({ message: "Bank details not found" });
     }
@@ -395,7 +395,7 @@ export const userWithdrawal = async (req, res) => {
     const withdrawal = await UserWithdrawal.create({
       userId: id,
       amount,
-      paymentMethod,
+      paymentMethod:"bank",
       accountnumber: accountDetails.accountNumber,
       ifsc: accountDetails.ifscCode,
       phone: accountDetails.phone,
