@@ -5,6 +5,9 @@ const rechargeSchema = new mongoose.Schema({
     type: String,
     ref: 'User'
   },
+  userName: {
+    type: String,
+  },
   id_order: {
     type: String,
     required: true,
