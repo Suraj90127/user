@@ -506,6 +506,7 @@ export const zilpay = async (req, res) => {
     if (response.data.status === "success") {
       const recharge = new Recharge({
         userId: id, // ✅ STRING MATCH
+        userName:user.userName,
         id_order: response.data.order_id,
         phone: user.phone,
         money: money,
