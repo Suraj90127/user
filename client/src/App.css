@@ -1,6 +1,6 @@
 :root {
-  --color-green-start: #2050ab;
-    --color-green-end: #162240;
+  --color-green-start: #6e081d;
+    --color-green-end: #6e081d;
     --color-blue-start: #315195;
     --color-blue-end: #14213D;
 
@@ -83,13 +83,13 @@ body {
 }
 
 .loader:before {
-  background: linear-gradient(#2050ab, #36cc9c);
+  background: linear-gradient(#6e081d, #36cc9c);
   width: 50px;
 }
 
 .loader:after {
   animation-delay: 0.5s;
-  background: linear-gradient(to top, #2050ab, #36cc9c);
+  background: linear-gradient(to top, #6e081d, #36cc9c);
   width: 50px;
 }
 
@@ -107,4 +107,18 @@ body {
   75% {
     transform: translateY(-70%)
   }
+}
+
+/* Hide scrollbar for webkit browsers */
+nav::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

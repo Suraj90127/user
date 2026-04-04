@@ -143,7 +143,7 @@ const Cricket = () => {
   );
 
   return (
-    <div className="bg-[#f1f3f5] min-h-screen">
+    <div className="bg-white min-h-screen">
       <Banner />
       <MenuNav />
 

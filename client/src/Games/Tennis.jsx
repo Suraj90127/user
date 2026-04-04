@@ -153,7 +153,7 @@ const Tennis = () => {
   };
 
   return (
-    <div className="bg-[#f1f3f5] min-h-screen pb-10">
+    <div className="bg-white min-h-screen pb-10">
       <Banner />
       <MenuNav />
 

@@ -61,7 +61,7 @@ const [isPaused, setIsPaused] = useState(false);
   }, [dispatch]);
 
   return (
-    <div className="w-full md:w-[25%] sticky top-[110px] h-fit me-auto hidden md:block">
+    <div className="w-full md:w-[25%] sticky top-[110px] md:h-fit me-auto hidden md:block bg-white lg:h-[550px] overflow-hidden">
         {/* Top Winner Players Section */}
       <div className="mb-4">
         <div className="rounded-t-md bg-black text-white px-4 py-2 border-b border-gray-800">

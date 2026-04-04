@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaPlay, FaSearch, FaArrowLeft, FaSpinner } from "react-icons/fa";
@@ -18,7 +16,11 @@ import {
   BingoGames,
 } from "../Data/GamesData";
 
-import { getAllGames, launchGame , checkGameBalance } from "../redux/reducer/AllgameReducer";
+import {
+  getAllGames,
+  launchGame,
+  checkGameBalance,
+} from "../redux/reducer/AllgameReducer";
 
 const Gamesections = () => {
   const { providerId } = useParams();
@@ -68,7 +70,7 @@ const Gamesections = () => {
       ...SlotsGames,
       ...BingoGames,
     ],
-    []
+    [],
   );
 
   const providerNames = {
@@ -83,9 +85,6 @@ const Gamesections = () => {
     SlotsGames: "Slots ",
     BingoGames: "Bingo ",
   };
-  
-
-  
 
   const apiGames = allGamesdata?.data || [];
   const allGames = apiGames.length > 0 ? apiGames : staticAllGames;
@@ -102,8 +101,8 @@ const Gamesections = () => {
       const matchesProvider = gamesBySection[providerId]
         ? true
         : providerId
-        ? game.provider?.toLowerCase() === providerId.toLowerCase()
-        : true;
+          ? game.provider?.toLowerCase() === providerId.toLowerCase()
+          : true;
 
       const matchesSearch = game.game_name
         ?.toLowerCase()
@@ -121,26 +120,23 @@ const Gamesections = () => {
 
   const currentGames = filteredGames.slice(
     (currentPage - 1) * gamesPerPage,
-    currentPage * gamesPerPage
+    currentPage * gamesPerPage,
   );
 
   /* ===========================
      GAME CLICK → REDIRECT TO GAME PAGE
   =========================== */
   const handlePlayGame = async (game) => {
-    
     if (!userInfo) {
       navigate("/login", {
         state: { redirectTo: `/games/${providerId || ""}` },
       });
       return;
     }
-  
+
     try {
-      await dispatch(
-        launchGame({ gameId: game.game_uid || game.id })
-      ).unwrap();
-  
+      await dispatch(launchGame({ gameId: game.game_uid || game.id })).unwrap();
+
       navigate(`/play/${game.game_uid || game.id}`, {
         state: {
           gameUrl: game.game_url,
@@ -152,7 +148,6 @@ const Gamesections = () => {
       alert(err || "Failed to launch game");
     }
   };
-  
 
   /* ===========================
      UI
@@ -161,41 +156,53 @@ const Gamesections = () => {
     <div className="mb-10 pb-16 p-2 md:p-4 bg-[#f8fafc] min-h-screen font-sans">
       <div className="max-w-[1400px] mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 gap-4">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-gray-400 hover:text-gray-700 text-sm font-bold"
-            >
-              <FaArrowLeft /> Back
-            </button>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 bg-white md:p-3 p-3 rounded-xl sha border border-gray-100 mb-6">
 
-            <h2 className="text-sm md:text-base font-black uppercase tracking-widest text-red-600">
-  {providerId ? `${providerNames[providerId] || providerId} Games` : "All Games"}
-</h2>
+  {/* Left Section */}
+  <div className="flex items-center gap-3">
 
-          </div>
+    <button
+      onClick={() => navigate(-1)}
+      className="flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-lg text-sm font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all"
+    >
+      <FaArrowLeft className="text-xs" />
+      Back
+    </button>
 
-          {/* Search */}
-          <div className="relative w-full md:w-72">
-            <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-3" />
-            <input
-              type="text"
-              placeholder="Search games..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-red-300 focus:ring-2 focus:ring-red-100 transition-all"
-            />
-          </div>
-        </div>
+    <div className="h-5 w-[2px] bg-gray-200"></div>
+
+    <h2 className="text-sm md:text-base font-black uppercase tracking-widest bg-gradient-to-r from-red-600 to-orange-500 bg-clip-text text-transparent">
+      {providerId
+        ? `${providerNames[providerId] || providerId} Games`
+        : "All Games"}
+    </h2>
+
+  </div>
+
+  {/* Search Section */}
+  <div className="relative w-full md:w-80 group">
+
+    <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs group-focus-within:text-red-500 transition-colors" />
+
+    <input
+      type="text"
+      placeholder="Search games..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-red-200 focus:ring-2 focus:ring-red-100 transition-all shadow-"
+    />
+
+  </div>
+
+</div>
 
         {/* Game Grid */}
-        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1 md:gap-6">
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1 md:gap-2">
           {currentGames.map((game) => (
             <div
               key={game.id || game.game_uid}
               onClick={() => handlePlayGame(game)}
-              className="group cursor-pointer bg-white rounded overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:border-red-100 transition-all duration-300"
+              className="group cursor-pointer bg-white rounded overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:border-red-100 transition-all duration-300"
             >
               <div className="relative aspect-[1/1.2] overflow-hidden bg-gray-100">
                 <img
@@ -274,7 +281,9 @@ const Gamesections = () => {
 
               {/* Ellipsis */}
               {currentPage < totalPages - 1 && (
-                <span className="px-2 text-gray-400 text-xs font-bold">...</span>
+                <span className="px-2 text-gray-400 text-xs font-bold">
+                  ...
+                </span>
               )}
 
               {/* Last Page */}
@@ -303,4 +312,3 @@ const Gamesections = () => {
 };
 
 export default Gamesections;
-

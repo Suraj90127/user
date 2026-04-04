@@ -95,7 +95,7 @@ const Inplay = () => {
   };
 
   return (
-    <div className="bg-[#f1f3f5] min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Tab bar consistent with screenshot style */}
       <div className="flex bg-[#2c3e50] border-b border-gray-700">
         {Object.keys(categories).map((tab) => (

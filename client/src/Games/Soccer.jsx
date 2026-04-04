@@ -123,7 +123,7 @@ const Soccer = () => {
   );
 
   return (
-    <div className="bg-[#f1f3f5] min-h-screen">
+    <div className="bg-white min-h-screen">
       <Banner />
       <MenuNav />
       {userInfo ? (gameOnOff ? renderMatches() : <div className="text-center py-10"><h2 className="text-3xl text-red-500 font-semibold">This Game is Hidden</h2></div>) : renderMatches()}

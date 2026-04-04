@@ -161,7 +161,7 @@ const Sidebar = ({ activeNavItem }) => {
         </div>
 
         {/* Navigation Content */}
-        <nav className="flex-1 overflow-y-auto py-4">
+        <nav className="flex-1 overflow-y-auto py-4  bg-white scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <ul className="space-y-1">
             {filteredItems.map((item, index) => {
               const hasSubItems = item.hasArrow ;

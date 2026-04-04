@@ -64,7 +64,7 @@ function App() {
         
         {/* ================= MAIN LAYOUT ROUTES ================= */}
         <Route path="/*" element={
-          <div className="flex flex-col">
+          <div className="flex flex-col bg-[#eceaea]">
             <Navbar />
             <MobileNavigation />
             <div className="flex flex-1 relative md:w-[90%] w-full md:m-auto">
@@ -72,7 +72,7 @@ function App() {
               <Sidebar />
 
               {/* Main Content */}
-              <div className="flex-1 md:p-2 w-[55%]">
+              <div className="flex-1 md:p-2 w-[55%] ">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/in-play" element={<Inplay />} />
